@@ -1,4 +1,5 @@
 import {Request, Response} from 'express';
+import {productsOperations} from '../persistencia/productos';
 
 let productos = [
     {id:1, nombre:"lapiz",precio:200},
@@ -6,32 +7,33 @@ let productos = [
 ]
 
 class Producto { 
-    async getProducts(req: Request, res: Response) {
+    getProducts(req: Request, res: Response) {
+
         const id = req.params.id;
-        if(id) {
-            const producto = productos.find(aProduct => aProduct.id == Number(id));
-            if(!producto) res.status(404).json({
-                msg: "producto no encontrado"
-            })
+        if(id){
+            const product = productsOperations.findOne(Number(id));
+            if(!product) {
+                return res.status(404).json({
+                    error: "No se encontro el producto solicitado"
+                })
+            }
             return res.status(200).json({
-                data: producto
+                data: product
             })
         }
 
-        res.json({ data: productos })
+        const products = productsOperations.getAll();
+        return res.json({ data: products });
     }
 
-    async addProduct(req: Request, res: Response) {
-        const {nombre, precio} = req.body;
-        if(!nombre || !precio || typeof nombre !== "string" || typeof precio !== "number") {
+    addProduct(req: Request, res: Response) {
+        const {name, description, code, photo, price, stock} = req.body;
+
+        
+        if(!name || !price || !description || !code || !photo || !stock ){
             return res.status(400).json({error: 'La informacion ingresada es incorrecta'})
         }
-        const newProduct = {
-            id: productos.length + 1,
-            nombre: nombre,
-            precio: precio
-        }
-        productos.push(newProduct);
+        const newProduct = productsOperations.add(req.body); 
 
         return res.status(201).json({
             msg: "Producto creado con exito!",
@@ -57,10 +59,10 @@ class Producto {
             })
         }
 
-       productos = productos.filter(aProduct => aProduct.id !== Number(req.params.id))
+       const deleteProduct = productsOperations.delete(Number(req.params.id));
        return res.status(200).json({
            msg: 'El producto se elimino exitosamente',
-           data: productos
+           data: deleteProduct
        })
     }
 }
