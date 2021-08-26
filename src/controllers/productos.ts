@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import {productsOperations} from '../persistencia/productos';
+import {productsOperations} from '../persistencia/productsOperations';
 
 let productos = [
     {id:1, nombre:"lapiz",precio:200},
@@ -28,7 +28,6 @@ class Producto {
 
     addProduct(req: Request, res: Response) {
         const {name, description, code, photo, price, stock} = req.body;
-
         
         if(!name || !price || !description || !code || !photo || !stock ){
             return res.status(400).json({error: 'La informacion ingresada es incorrecta'})
@@ -41,28 +40,38 @@ class Producto {
         })
     }
 
-    async updateProduct(req: Request, res: Response) {
+    updateProduct(req: Request, res: Response) {
+        const id = Number(req.params.id);
 
+        const findProduct = productsOperations.findOne(id);
+
+        if(findProduct == undefined){
+            return res.status(404).json({
+                error: "El producto que estas intentando actualizar no existe"
+            })
+        }
+        
+        const updateProduct = productsOperations.update(id, req.body, findProduct);
+        res.status(201).json({
+            msg: 'Producto actualizado con exito!',
+            data: updateProduct
+        })
     }
 
-    async deleteProduct(req: Request, res: Response) {
-        if(!req.params.id){
+    deleteProduct(req: Request, res: Response) {
+        const id = Number(req.params.id);
+
+        const findProduct = productsOperations.findOne(id);
+        if(!findProduct){
             return res.status(400).json({
-                error: 'No se envio un id valido'
+                error: "El producto no existe"
             })
         }
 
-        const productIndex = productos.find(aProduct => aProduct.id == Number(req.params.id));
-        if(!productIndex){
-            res.status(400).json({
-                error: 'El producto no existe'
-            })
-        }
-
-       const deleteProduct = productsOperations.delete(Number(req.params.id));
+       const products = productsOperations.delete(id);
        return res.status(200).json({
            msg: 'El producto se elimino exitosamente',
-           data: deleteProduct
+           data: products
        })
     }
 }
