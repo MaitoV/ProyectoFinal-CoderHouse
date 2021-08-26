@@ -1,46 +1,44 @@
-import moment from 'moment';
 import productInterface from './productInterface';
+import { fileOperations } from './filesOperations';
 
 let productos = [
     {id:1, name:"lapicera", description:"Lapicera transparente de punta fina", code: "2032A24", photo:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqUrAkbBgYWrv0sLYQuC7XCIouhzjwPp_VFQ&usqp=CAU", price:200, stock:10, timestamps: "2021-08-25T17:31:54.070Z"},
     {id:2, name:"mochila", description:"Lapicera transparente de punta fina", code: "2032A24", photo:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqUrAkbBgYWrv0sLYQuC7XCIouhzjwPp_VFQ&usqp=CAU", price:200, stock:10, timestamps: "2021-08-25T17:31:54.070Z"},
     {id:3, name:"cuaderno", description:"Cuaderno de tapas duras", code: "2020A23", photo:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqUrAkbBgYWrv0sLYQuC7XCIouhzjwPp_VFQ&usqp=CAU", price:500, stock:4, timestamps: "2021-08-26T17:31:54.070Z"}
 ]
-class ProductsOperations {
-    findOne(id: number) : productInterface | undefined {
-        return productos.find(aProduct => aProduct.id === id);
-    }
-    getAll() {
-            return productos;
-    }
-    add(data: productInterface){
-        const newProduct = {
-            id: productos.length + 1,
-            name: data.name,
-            description: data.description,
-            code: data.code,
-            photo: data.photo,
-            price: data.price,
-            stock: data.stock,
-            timestamps: `${moment().format('DD MM YY h:mm')}`
-        }
-        productos.push(newProduct);
 
-        return newProduct;
+class ProductsOperations {
+    async findOne(id: number) : Promise <productInterface | undefined > {
+        const readDB = await fileOperations.readFile('productsdb.json');
+        return readDB.find(aProduct => aProduct.id === id);
     }
-    delete(id:number){
-        console.log('eliminado con exito!');
-        return productos = productos.filter(aProduct => aProduct.id !== id);
+    async getAll() : Promise < Array<productInterface> | null > {
+        let productsList = await fileOperations.readFile('productsdb.json');
+        return productsList;
     }
-    update(
+    async add(data: productInterface){
+        const addToDB = await fileOperations.addNewItem('productsdb.json', data);
+        return addToDB;
+    }
+    async delete(id:number){
+        let dbProducts = await fileOperations.readFile('productsdb.json');
+        dbProducts = dbProducts.filter(aProduct => aProduct.id !== id);
+        await fileOperations.writeFile('productsdb.json', dbProducts);
+        return dbProducts;
+    }
+    async update(
         id: number, 
         newData: productInterface, 
         oldData: productInterface) {
+        let db = await fileOperations.readFile('productsdb.json');
+        db = await this.delete(id);
+
         const updateProduct = {...oldData, ...newData};
-        this.delete(id);
-        productos.push(updateProduct);
-        productos = productos.sort((productA: productInterface, productB: productInterface) => productA.id - productB.id); 
-        console.log(productos);
+
+        db.push(updateProduct);
+        db.sort((productA: productInterface, productB: productInterface) => productA.id - productB.id); 
+
+        await fileOperations.writeFile('productsdb.json', db);
         return updateProduct;
     }
 }

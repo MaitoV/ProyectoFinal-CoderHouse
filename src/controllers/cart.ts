@@ -23,7 +23,7 @@ class Cart {
             data: getCart
         })
     }    
-    addCartProduct(req: Request, res: Response){
+    addCartProduct(req: Request, res: Response){/*
         const id = Number(req.params.id);
 
         const findProduct = productsOperations.findOne(id);
@@ -39,7 +39,7 @@ class Cart {
             msg: 'Producto añadido exitosamente',
             data: addToCart
         })
-    }
+    */}
     deleteCartProduct(req: Request, res: Response){
         const id = Number(req.params.id);
 
