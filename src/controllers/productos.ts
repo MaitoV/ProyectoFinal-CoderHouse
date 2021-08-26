@@ -1,14 +1,7 @@
 import {Request, Response} from 'express';
 import {productsOperations} from '../persistencia/productsOperations';
-
-let productos = [
-    {id:1, nombre:"lapiz",precio:200},
-    {id:2, nombre:"mochila",precio:500}
-]
-
 class Producto { 
     getProducts(req: Request, res: Response) {
-
         const id = req.params.id;
         if(id){
             const product = productsOperations.findOne(Number(id));
@@ -23,7 +16,7 @@ class Producto {
         }
 
         const products = productsOperations.getAll();
-        return res.json({ data: products });
+        return res.status(200).json({ data: products });
     }
 
     addProduct(req: Request, res: Response) {

@@ -1,7 +1,7 @@
 //Ruter principal que importara todas las demas rutas
 import {Router} from 'express';
-import productsRouter from './productos';
-import cartRouter from './carrito';
+import productsRouter from './products';
+import cartRouter from './cart';
 const router = Router();
 
 //Todo lo que venga con el prefijo /products se lo delego al router de productos
