@@ -2,6 +2,7 @@ import productInterface from './productInterface';
 import { fileOperations } from './filesOperations';
 class CartOperations {
     async findOne(id: number) : Promise <productInterface | undefined > {
+        
         const readCart = await fileOperations.readFile('cartdb.json');
         return readCart.find(aProduct => aProduct.id === id);
     }

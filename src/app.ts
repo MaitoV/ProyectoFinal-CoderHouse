@@ -1,5 +1,5 @@
 //Importamos nuestro servidor
-import server from './services/server';
+import server from './server/server';
 
 //Creamos la variable de puerto
 const puerto = process.env.PORT || 8080; //Si tenemos definida la variable.port utilizara eso, si no por defecto 8080
