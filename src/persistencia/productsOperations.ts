@@ -8,14 +8,11 @@ class ProductsOperations {
             if(product){
                 return product
             } else throw {
-                status: 200,
+                status: 404,
                 msg: 'No se encontro el producto solicitado'
             }
         } catch (error) {
-            throw {
-                status: error.status,
-                msg: error.msg
-            }
+            throw error;
         }
     }
 
@@ -30,16 +27,17 @@ class ProductsOperations {
             }
             return productsList;
         } catch (error) {
-            throw {
-                status: error.status,
-                msg: error.msg
-            }
+            throw error;
         }  
     }
 
     async add(data: productInterface){
+        try {
             const addToDB = await fileOperations.addNewItem('productsdb.json', data);
             return addToDB;
+        } catch(error) {
+            throw error;
+        }
     }
 
     async delete(id:number){

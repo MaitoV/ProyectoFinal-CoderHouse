@@ -52,7 +52,7 @@ class FileOperations {
         } catch (error) {
             throw {
                 status: 502,
-                msg: 'Se produjo un error al intentar guardar el producto'
+                msg: 'Se produjo un error al intentar agregar el producto'
             }
         }
     }

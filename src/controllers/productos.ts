@@ -1,10 +1,7 @@
 import {Request, Response, NextFunction} from 'express';
 import {productsOperations} from '../persistencia/productsOperations';
 class Producto { 
-    checkProduct (req: Request, res: Response, next: NextFunction) {
-        //Lo pasaremos como middleware al controlador
-        //Middleware que verifique si el producto ya existe
-    }
+
     async getProducts(req: Request, res: Response) {
         try {
             const id = req.params.id;
@@ -29,7 +26,7 @@ class Producto {
     async addProduct(req: Request, res: Response) {
         try {
             const {name, description, code, photo, price, stock} = req.body;
-            //Mejorar validacion
+
             if(!name || !price || !description || !code || !photo || !stock ){
                 throw {
                     status: 400,
@@ -38,7 +35,7 @@ class Producto {
             }
 
             const newProduct = await productsOperations.add(req.body); 
-            //Validar si el producto ya existe
+
             return res.status(201).json({
                 msg: "Producto creado con exito!",
                 data: newProduct
@@ -87,7 +84,6 @@ class Producto {
                 error: error.msg
             })
         }
-
     }
 }
 
