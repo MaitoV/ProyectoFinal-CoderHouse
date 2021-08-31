@@ -10,21 +10,16 @@ class Producto {
             const id = req.params.id;
             if(id){
                 const product = await productsOperations.findOne(Number(id));
-                if(product) {
-                    return res.status(200).json({
-                        data: product
-                    })
-                } else throw {
-                    status: 404,
-                    msg:'No se encontro el producto solicitado'
-                }
+                return res.status(200).json({
+                    data: product
+                })
             }
 
             const products = await productsOperations.getAll();
-            //Agregar aca por si no hay productos
             return res.status(200).json({ data: products });
 
         } catch (error){
+            console.log(error)
             return res.status(error.status).json({
                 error: error.msg
             })
@@ -62,18 +57,12 @@ class Producto {
 
             const findProduct = await productsOperations.findOne(id);
 
-            if(!findProduct){
-                throw {
-                    status: 404,
-                    msg: 'El producto que estas intentando actualizar no existe'
-                }
-            }
-            
-            const updateProduct = await productsOperations.update(id, req.body, findProduct);
-            res.status(201).json({
+            if(findProduct){
+                const updateProduct = await productsOperations.update(id, req.body, findProduct);
+                res.status(201).json({
                 msg: 'Producto actualizado con exito!',
-                data: updateProduct
-            })
+                data: updateProduct })   
+            }
 
         } catch (error) {
             res.status(error.status).json({
@@ -87,19 +76,12 @@ class Producto {
             const id = Number(req.params.id);
 
             const findProduct = await productsOperations.findOne(id);
-            if(!findProduct){
-                throw {
-                    status: 400,
-                    msg: 'El producto que estas intentando eliminar no existe'
-                }
-            }
-
-            const products = await productsOperations.delete(id);
-            return res.status(200).json({
+            if(findProduct){
+                const products = await productsOperations.delete(id);
+                return res.status(200).json({
                 msg: 'El producto se elimino exitosamente',
-                data: products
-            })
-
+                data: products })   
+            }
         } catch (error){
             res.status(error.status).json({
                 error: error.msg
