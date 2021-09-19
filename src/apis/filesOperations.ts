@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs/promises';
-import productInterface from './productInterface';
+import { ProductInterface } from '../models/products/productsInterface';
 import moment from 'moment';
 
 
@@ -8,7 +8,7 @@ class FileOperations {
     pathFile (fileName: string) {
             return path.resolve(__dirname, `../../bd/${fileName}`)
     }
-    async readFile (fileName:string): Promise < Array<productInterface> > {
+    async readFile (fileName:string): Promise < Array<ProductInterface> > {
         try {
             const path = this.pathFile(fileName)
             const db = await fs.readFile(path, 'utf-8');
@@ -21,7 +21,7 @@ class FileOperations {
             }
         }
     }
-    async writeFile (fileName:string, data: Array <productInterface>) {
+    async writeFile (fileName:string, data: Array <ProductInterface>) {
         try {
             const filePath = this.pathFile(fileName);
             const dataToJSON = JSON.stringify(data, null, '\t');
@@ -33,7 +33,7 @@ class FileOperations {
             }
         }
     }
-    async addNewItem (fileName:string, data: productInterface) {
+    async addNewItem (fileName:string, data: ProductInterface) {
         try {
             const db = await this.readFile(fileName);
             const newProduct = {

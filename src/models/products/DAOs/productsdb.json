@@ -1,0 +1,32 @@
+[
+	{
+		"id": 1,
+		"name": "Harina 0000 5kg",
+		"description": "Harina 4 ceros de los molinos de macachin",
+		"code": "2032A24",
+		"photo": "https://molinosalarcia/harina.jpg",
+		"price": 250,
+		"stock": 1000,
+		"timestamps": "2021-08-25T17:31:54.070Z"
+	},
+	{
+		"id": 2,
+		"name": "Azucar Blanca Ledesma 1kg",
+		"description": "Azucar blanca refinada por 1kg marca ledesma",
+		"code": "2032A24",
+		"photo": "https://ledesmaAzucar.jpg",
+		"price": 80,
+		"stock": 10,
+		"timestamps": "2021-08-25T17:31:54.070Z"
+	},
+	{
+		"id": 3,
+		"name": "Salsa de soja 2lts",
+		"description": "Salsa de soja de primera calidad 2lts",
+		"code": "2020A23",
+		"photo": "http://www.salsaSoja.jpg",
+		"price": 850,
+		"stock": 400,
+		"timestamps": "2021-08-26T17:31:54.070Z"
+	}
+]

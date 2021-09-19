@@ -1,7 +1,8 @@
-import productInterface from './productInterface'; 
+import { ProductInterface } from '../models/products/productsInterface';
 import { fileOperations } from './filesOperations';
+import { productsOperations } from './productsOperations';
 class CartOperations {
-    async findOne(id: number) : Promise <productInterface | undefined > {
+    async findOne(id: number) : Promise <ProductInterface | undefined > {
         try {
             const readCart = await fileOperations.readFile('cartdb.json');
             let productFound = readCart.find(aProduct => aProduct.id === id);
@@ -23,7 +24,7 @@ class CartOperations {
             throw error
         }
     }
-    async addCart(product: productInterface){
+    async addCart(product: ProductInterface){
         try {
             const addToCart = await fileOperations.addNewItem('cartdb.json', product);
             return addToCart;

@@ -1,6 +1,6 @@
 import {Request, Response } from "express";
-import {cartOperations} from '../persistencia/cartOperations';
-import {productsOperations} from '../persistencia/productsOperations';
+import {cartOperations} from '../apis/cartOperations';
+import {productsOperations} from '../apis/productsOperations';
 
 class Cart {
     async getCart(req: Request, res: Response) {
