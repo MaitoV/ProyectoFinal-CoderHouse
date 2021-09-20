@@ -1,6 +1,5 @@
 export const sqliteSeeds = [
     {
-        id: 1,
         name: 'Sobre Te Vic Miel y Canela',
         price: 86,
         stock: 150,
@@ -10,7 +9,6 @@ export const sqliteSeeds = [
         description: 'Te vic con vitamina C para prevenir los resfrios'
     },
     {
-        id: 2,
         name: 'Cafiaspirinas Bayer',
         price: 65,
         stock: 150,
@@ -21,7 +19,6 @@ export const sqliteSeeds = [
 
     },
     {
-        id: 3,
         name: 'Crema Nivea',
         price: 6500,
         stock: 15,

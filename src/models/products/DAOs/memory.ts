@@ -1,62 +1,50 @@
 import { ProductsClassDAOs } from "../productsInterface";
-import { ProductInterface } from "../productsInterface";
+import { ProductInterface, ProductI } from "../productsInterface";
+import { memorySeeds } from "../../../db/seeds/memory-seeds";
+import moment from "moment";
 
 export class productsMemory implements ProductsClassDAOs {
-    private productos: ProductInterface[] = [];
+    private productos: ProductI[];
 
     constructor() {
-        const seeders = [
-            {
-                "id": 1,
-                "name": "Cartuchera",
-                "description": "Cartuchera holografica",
-                "code": "2032A24",
-                "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqUrAkbBgYWrv0sLYQuC7XCIouhzjwPp_VFQ&usqp=CAU",
-                "price": 200,
-                "stock": 10,
-                "timestamps": "2021-08-25T17:31:54.070Z"
-            },
-            {
-                "id": 2,
-                "name": "Lapicera",
-                "description": "Lapicera transparente de punta fina",
-                "code": "2032A24",
-                "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqUrAkbBgYWrv0sLYQuC7XCIouhzjwPp_VFQ&usqp=CAU",
-                "price": 200,
-                "stock": 10,
-                "timestamps": "2021-08-25T17:31:54.070Z"
-            },
-            {
-                "id": 3,
-                "name": "Mochila Matera",
-                "description": "Mochila Matera para llevar tu mate a todas partes",
-                "code": "2020A23",
-                "photo": "http://www.mochimatera.com",
-                "price": 1500,
-                "stock": 400,
-                "timestamps": "2021-08-26T17:31:54.070Z"
-            }
-        ]
-
-        seeders.forEach((aSeed) => { this.productos.push(aSeed)} )
+        this.productos = [];
+        memorySeeds.forEach((aSeed) => { this.productos.push(aSeed)} )
     }
 
-    async get(): Promise<ProductInterface[]> {
+    async get(): Promise<ProductI[]> {
         return this.productos;
     }
     
-    async getById(id: number): Promise<ProductInterface | undefined > {
-        return undefined;
+    async getById(id: number): Promise<ProductI | undefined > {
+        return this.productos.find(aProduct => aProduct.id == id);
     }
 
-    async add(data: ProductInterface): Promise<ProductInterface> {
-        return this.productos[0];
+    async add(data: ProductInterface): Promise<ProductI> {
+        const newProduct: ProductI = {
+            id: this.productos.length + 1,
+            name: data.name,
+            description: data.description,
+            code: data.code,
+            photo: data.photo,
+            price: data.price,
+            stock: data.stock,
+            timestamps: `${moment().format('DD MM YYYY hh:mm')}`
+        }
+        this.productos.push(newProduct)
+        return newProduct;
     }
 
     async delete(id: number): Promise<void> {
+        this.productos = this.productos.filter((aProduct) => aProduct.id !== id);
     }
 
-    async update(id: number, newData:any) {
-        return this.productos[0];
+    async update(id: number, newData:any): Promise<ProductI> {
+        const oldData =  await this.getById(id);
+        await this.delete(id);
+        const updateData = {...oldData, ...newData};
+        this.productos.push(updateData);
+        this.productos = this.productos.sort((productA: ProductI, productB: ProductI) => productA.id - productB.id);
+
+        return updateData;
     }
 }
