@@ -19,5 +19,16 @@ export const sqliteSeeds = [
         timestamps: '20 09 2021 11:55',
         description: 'Cafiaspirina concentrada de Bayer'
 
+    },
+    {
+        id: 3,
+        name: 'Crema Nivea',
+        price: 6500,
+        stock: 15,
+        photo: 'http://cremanivea.jpg',
+        code: 'AMN1570',
+        timestamps: '20 09 2021 12:55',
+        description: 'Crema Nivea para pieles sensibles humectacion ultra concentrada'
+
     }
 ]

@@ -1,7 +1,7 @@
 import knex from "knex";
 import moment from "moment";
 import { ProductsClassDAOs } from "../productsInterface";
-import { ProductInterface } from "../productsInterface";
+import { ProductInterface, ProductI } from "../productsInterface";
 
 export class productsMySQL implements ProductsClassDAOs{
     private mysqlDB: any;
@@ -39,7 +39,7 @@ export class productsMySQL implements ProductsClassDAOs{
 
     async add(data: ProductInterface): Promise<ProductInterface> {
         try {
-            const newProduct: ProductInterface = {
+            const newProduct: ProductI = {
                 id: this.mysqlDB.default,
                 name: data.name,
                 description: data.description,

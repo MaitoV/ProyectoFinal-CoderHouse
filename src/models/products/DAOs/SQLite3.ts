@@ -12,11 +12,12 @@ export class productsSQLite3 implements ProductsClassDAOs {
             connection: {filename: './src/db/db.sqlite'}
         })
     }
+
     async initDB() {
         const tableProducts = await this.sqliteDB.schema.hasTable('products')
         if(!tableProducts) {
         await this.sqliteDB.schema.createTable('products', (productsTable: any) => {
-            productsTable.increments();
+            productsTable.increments('id').primary();
             productsTable.string('name').notNullable();
             productsTable.integer('price').notNullable();
             productsTable.integer('stock').notNullable();
@@ -53,7 +54,6 @@ export class productsSQLite3 implements ProductsClassDAOs {
     async add(data: ProductInterface): Promise<ProductInterface> {
         try {
             const newProduct: ProductInterface = {
-                id: this.sqliteDB.default,
                 name: data.name,
                 description: data.description,
                 code: data.code,
@@ -62,7 +62,7 @@ export class productsSQLite3 implements ProductsClassDAOs {
                 stock: data.stock,
                 timestamps: `${moment().format('DD MM YYYY hh:mm')}`
             }
-            const addNewProduct = await this.sqliteDB.from('products').insert(newProduct);
+            await this.sqliteDB.from('products').insert(newProduct);
             return newProduct;
         } catch (error) {
             throw error

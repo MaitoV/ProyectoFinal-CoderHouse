@@ -1,5 +1,5 @@
 import { ProductsClassDAOs } from "../productsInterface";
-import { ProductInterface } from "../productsInterface";
+import { ProductInterface, ProductI } from "../productsInterface";
 import moment from "moment";
 import fs from 'fs';
 import path from 'path';
@@ -8,7 +8,7 @@ const filePath = path.resolve(__dirname, '../../../db/productsdb.json')
 
 //TODO: agregar try y catch
 export class productsFS implements ProductsClassDAOs {
-    products: ProductInterface[];
+    products: ProductI[];
     filePath: string;
     constructor(){
         this.filePath = filePath;
@@ -42,7 +42,7 @@ export class productsFS implements ProductsClassDAOs {
         return this.products;
     }
 
-    async getById(id: number): Promise<ProductInterface | undefined > {
+    async getById(id: number): Promise<ProductI | undefined > {
         try {
             await this.readFile();
             return this.products.find((aProduct) => aProduct.id === id);
@@ -51,10 +51,10 @@ export class productsFS implements ProductsClassDAOs {
         }
     }
 
-    async add(data: ProductInterface): Promise<ProductInterface> {
+    async add(data: ProductInterface): Promise<ProductI> {
         try {
             await this.readFile();
-            const newProduct: ProductInterface = {
+            const newProduct: ProductI = {
                 id: this.products.length + 1,
                 name: data.name,
                 description: data.description,
@@ -83,14 +83,14 @@ export class productsFS implements ProductsClassDAOs {
         }
     }
 
-    async update(id:number, newData:any): Promise<ProductInterface> {
+    async update(id:number, newData:any): Promise<ProductI> {
         try {
             const oldData = await this.getById(id);
             await this.delete(id);
             const updateData = {...oldData, ...newData};
 
             this.products.push(updateData);
-            this.products.sort((productA: ProductInterface, productB: ProductInterface) => productA.id - productB.id); 
+            this.products.sort((productA: ProductI, productB: ProductI) => productA.id - productB.id); 
 
             await this.writeFile(this.products);
 

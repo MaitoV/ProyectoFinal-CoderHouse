@@ -2,7 +2,7 @@ import { ProductInterface } from '../models/products/productsInterface';
 import { tipoDePersistencia } from '../models/products/productsFactory';
 import { productsFactory } from '../models/products/productsFactory';
 
-const persistencia = tipoDePersistencia.SQLITE3;
+const persistencia = tipoDePersistencia.MySQL;
 
 class ProductsOperations {
     private persistenceInstance;

@@ -1,6 +1,5 @@
 
 export interface ProductInterface {
-    id: number,
     name: string,
     description: string,
     code: string,
@@ -8,6 +7,9 @@ export interface ProductInterface {
     price: number,
     stock: number,
     timestamps: string
+}
+export interface ProductI extends ProductInterface {
+    id: number
 }
 export interface ProductQuery {
     nombre?: string;

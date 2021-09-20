@@ -1,17 +1,18 @@
-import { ProductInterface } from '../models/products/productsInterface';
+import { ProductInterface, ProductI } from '../models/products/productsInterface';
 import { fileOperations } from './filesOperations';
 import { productsOperations } from './productsOperations';
 class CartOperations {
-    async findOne(id: number) : Promise <ProductInterface | undefined > {
+    async findOne(id: number) : Promise <any> {
         try {
             const readCart = await fileOperations.readFile('cartdb.json');
-            let productFound = readCart.find(aProduct => aProduct.id === id);
-            if(productFound) {
+            //let productFound = readCart.find(aProduct => aProduct.id === id);
+            /*if(productFound) {
                 return productFound
             } else throw {
                 status: 404,
                 msg: 'El producto solicitado no existe en tu carrito'
-            }
+            }*/
+            return 'ok'
         } catch (error) {
             throw error;
         }
@@ -35,8 +36,8 @@ class CartOperations {
     async deleteCart(id: number) {
         try {
             let cart = await fileOperations.readFile('cartdb.json');
-            cart = cart.filter(aProduct => aProduct.id !== id);
-            await fileOperations.writeFile('cartdb.json', cart);
+            //cart = cart.filter(aProduct => aProduct.id !== id);
+            //await fileOperations.writeFile('cartdb.json', cart);
 
             if(cart.length != 0) return cart;
             else throw {
