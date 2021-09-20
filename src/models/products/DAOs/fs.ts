@@ -3,7 +3,7 @@ import { ProductInterface } from "../productsInterface";
 import moment from "moment";
 import fs from 'fs';
 import path from 'path';
-const filePath = path.resolve(__dirname, './productsdb.json')
+const filePath = path.resolve(__dirname, '../../../db/productsdb.json')
 
 
 //TODO: agregar try y catch

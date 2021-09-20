@@ -24,7 +24,9 @@ export class productsFactory {
                 return new productsMySQL();
             
             case tipoDePersistencia.SQLITE3:
-                return new productsSQLite3();
+                const instanceSQLite3 = new productsSQLite3();
+                instanceSQLite3.initDB();
+                return instanceSQLite3;
 
            default: 
             return new productsMemory();
