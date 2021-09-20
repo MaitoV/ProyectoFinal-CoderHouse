@@ -1,6 +1,8 @@
 import { productsMemory } from './DAOs/memory';
 import { productsFS } from './DAOs/fs';
 import { productsMySQL } from './DAOs/MySQL';
+import { productsSQLite3 } from './DAOs/SQLite3';
+
 export enum tipoDePersistencia {
     Memory = 'MEM',
     FileSystem = 'FS',
@@ -21,8 +23,8 @@ export class productsFactory {
             case tipoDePersistencia.MySQL:
                 return new productsMySQL();
             
-            /*case tipoDePersistencia.MongoAtlas:
-                return new productsAtlas();*/
+            case tipoDePersistencia.SQLITE3:
+                return new productsSQLite3();
 
            default: 
             return new productsMemory();

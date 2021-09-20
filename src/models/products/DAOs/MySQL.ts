@@ -1,4 +1,5 @@
 import knex from "knex";
+import moment from "moment";
 import { ProductsClassDAOs } from "../productsInterface";
 import { ProductInterface } from "../productsInterface";
 
@@ -29,9 +30,7 @@ export class productsMySQL implements ProductsClassDAOs{
     async getById(id: number): Promise<ProductInterface | undefined > {
         try {
             const getProduct = await this.mysqlDB.from('products').where({id: id});
-
-            if(getProduct.length == 0) throw('El producto solicitado no existe');
-
+            if(getProduct.length == 0) return undefined;
             return getProduct;
         } catch (error) {
             throw error;
@@ -40,12 +39,18 @@ export class productsMySQL implements ProductsClassDAOs{
 
     async add(data: ProductInterface): Promise<ProductInterface> {
         try {
-            const addNewProduct = await this.mysqlDB.from('products').insert({
+            const newProduct: ProductInterface = {
+                id: this.mysqlDB.default,
                 name: data.name,
+                description: data.description,
+                code: data.code,
+                photo: data.photo,
                 price: data.price,
-                photo: data.photo
-            });
-            return addNewProduct;
+                stock: data.stock,
+                timestamps: `${moment().format('DD MM YYYY hh:mm')}`
+            }
+            const addNewProduct = await this.mysqlDB.from('products').insert(newProduct);
+            return newProduct;
         } catch (error) {
             throw error
         }
@@ -53,10 +58,7 @@ export class productsMySQL implements ProductsClassDAOs{
     
     async delete(id:number) : Promise<void> {
         try {
-            const findProduct = await this.getById(id);
-
             await this.mysqlDB('products').where({id: id}).del();
-
         } catch (error) {
             throw error;
         }
@@ -65,7 +67,6 @@ export class productsMySQL implements ProductsClassDAOs{
     async update(id:number, newData:any): Promise<ProductInterface> {
         try {
             const update = await this.mysqlDB('products').where({id: id}).update(newData);
-            if(!update) throw('El producto que estas intentando editar no existe ')
             return update;
         } catch (error) {
             throw error;
