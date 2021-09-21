@@ -15,7 +15,8 @@ export class productsMemory implements ProductsClassDAOs {
         return this.productos;
     }
     
-    async getById(id: number): Promise<ProductI | undefined > {
+    async getById(productId: string): Promise<ProductI | undefined > {
+        const id = Number(productId);
         return this.productos.find(aProduct => aProduct.id == id);
     }
 
@@ -34,13 +35,14 @@ export class productsMemory implements ProductsClassDAOs {
         return newProduct;
     }
 
-    async delete(id: number): Promise<void> {
+    async delete(productId: string): Promise<void> {
+        const id = Number(productId);
         this.productos = this.productos.filter((aProduct) => aProduct.id !== id);
     }
 
-    async update(id: number, newData:any): Promise<ProductI> {
-        const oldData =  await this.getById(id);
-        await this.delete(id);
+    async update(productId: string, newData:any): Promise<ProductI> {
+        const oldData =  await this.getById(productId);
+        await this.delete(productId);
         const updateData = {...oldData, ...newData};
         this.productos.push(updateData);
         this.productos = this.productos.sort((productA: ProductI, productB: ProductI) => productA.id - productB.id);

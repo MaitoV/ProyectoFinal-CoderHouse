@@ -11,6 +11,10 @@ export interface ProductInterface {
 export interface ProductI extends ProductInterface {
     id: number
 }
+
+export interface ProductII extends ProductInterface {
+    _id: string
+}
 export interface ProductQuery {
     nombre?: string;
     precio?: number; 
@@ -18,8 +22,8 @@ export interface ProductQuery {
 
 export interface ProductsClassDAOs {
     get(): Promise <ProductInterface[]>;
-    getById(id:number): Promise<ProductInterface | undefined>;
+    getById(productId: string): Promise<ProductInterface | undefined>;
     add(data: ProductInterface): Promise<ProductInterface>; 
-    delete(id: number) : Promise<void>;
-    update(id:number, newData: ProductInterface) : Promise<ProductInterface>;
+    delete(productId: string) : Promise<void>;
+    update(productId: string, newData: ProductInterface) : Promise<ProductInterface>;
 }

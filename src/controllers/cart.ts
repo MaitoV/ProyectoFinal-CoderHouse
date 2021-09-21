@@ -14,7 +14,7 @@ class Cart {
             return res.status(200).json({
             data: getCart })
 
-        } catch (error) {
+        } catch (error: any) {
             res.status(error.status).json({
                 error: error.msg
             })
@@ -24,7 +24,7 @@ class Cart {
 
     async addCartProduct(req: Request, res: Response){
         try {
-            const id = Number(req.params.id);
+            const {id} = req.params;
             const findProduct = await productsOperations.findOne(id);
 
             if(findProduct){
@@ -34,7 +34,7 @@ class Cart {
                     data: addToCart
                 })    
             }
-        } catch (error) {
+        } catch (error: any) {
             res.status(error.status).json({
                 error: error.msg
             })

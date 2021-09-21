@@ -2,7 +2,7 @@ import { ProductInterface } from '../models/products/productsInterface';
 import { tipoDePersistencia } from '../models/products/productsFactory';
 import { productsFactory } from '../models/products/productsFactory';
 
-const persistencia = tipoDePersistencia.Memory;
+const persistencia = tipoDePersistencia.LocalMongo;
 
 class ProductsOperations {
     private persistenceInstance;
@@ -11,7 +11,7 @@ class ProductsOperations {
     }
 
 
-    async findOne(id: number) : Promise <ProductInterface | undefined > {
+    async findOne(id: string) : Promise <ProductInterface | undefined > {
         return await this.persistenceInstance.getById(id)
         //TODO: Trabajar que pasa si vuelve undefined
         /*try {
@@ -36,12 +36,12 @@ class ProductsOperations {
         return this.persistenceInstance.add(data);
     }
 
-    async delete(id:number){
+    async delete(id:string){
         return this.persistenceInstance.delete(id);
     }
 
     async update(
-        id: number, 
+        id: string, 
         newData: ProductInterface) {
             return await this.persistenceInstance.update(id, newData);
     }

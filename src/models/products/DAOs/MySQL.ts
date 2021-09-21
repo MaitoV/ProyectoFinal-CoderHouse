@@ -19,7 +19,10 @@ export class productsMySQL implements ProductsClassDAOs{
     async get(): Promise<ProductInterface[]> {
         try {
             const productsList = await this.mysqlDB.from('products').select();
-            if(productsList.length == 0) throw('No hay productos cargados.')
+            if(productsList.length == 0) throw({
+                status: 404,
+                msg: 'Todavia no hay productos cargados en tu base de datos'
+            })
 
             return productsList;
        } catch(error) {
@@ -27,8 +30,9 @@ export class productsMySQL implements ProductsClassDAOs{
        }
     }
 
-    async getById(id: number): Promise<ProductInterface | undefined > {
+    async getById(productId: string): Promise<ProductInterface | undefined > {
         try {
+            const id = Number(productId);
             const getProduct = await this.mysqlDB.from('products').where({id: id});
             if(getProduct.length == 0) return undefined;
             return getProduct;
@@ -56,16 +60,18 @@ export class productsMySQL implements ProductsClassDAOs{
         }
     }
     
-    async delete(id:number) : Promise<void> {
+    async delete(productId:string) : Promise<void> {
         try {
+            const id = Number(productId);
             await this.mysqlDB('products').where({id: id}).del();
         } catch (error) {
             throw error;
         }
     }
 
-    async update(id:number, newData:any): Promise<ProductInterface> {
+    async update(productId:string, newData:any): Promise<ProductInterface> {
         try {
+            const id = Number(productId);
             const update = await this.mysqlDB('products').where({id: id}).update(newData);
             return update;
         } catch (error) {

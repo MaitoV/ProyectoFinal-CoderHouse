@@ -42,8 +42,9 @@ export class productsFS implements ProductsClassDAOs {
         return this.products;
     }
 
-    async getById(id: number): Promise<ProductI | undefined > {
+    async getById(productId: string): Promise<ProductI | undefined > {
         try {
+            const id = Number(productId);
             await this.readFile();
             return this.products.find((aProduct) => aProduct.id === id);
         } catch (error) {
@@ -73,8 +74,9 @@ export class productsFS implements ProductsClassDAOs {
         }
     }
     
-    async delete(id:number) : Promise<void> {
+    async delete(productId:string) : Promise<void> {
         try {
+            const id = Number(productId);
             await this.readFile()
             this.products = this.products.filter((aProduct) => aProduct.id !== id);
             await this.writeFile(this.products);
@@ -83,10 +85,10 @@ export class productsFS implements ProductsClassDAOs {
         }
     }
 
-    async update(id:number, newData:any): Promise<ProductI> {
+    async update(productId:string, newData:any): Promise<ProductI> {
         try {
-            const oldData = await this.getById(id);
-            await this.delete(id);
+            const oldData = await this.getById(productId);
+            await this.delete(productId);
             const updateData = {...oldData, ...newData};
 
             this.products.push(updateData);

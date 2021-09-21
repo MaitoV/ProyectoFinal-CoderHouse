@@ -2,6 +2,7 @@ import { productsMemory } from './DAOs/memory';
 import { productsFS } from './DAOs/fs';
 import { productsMySQL } from './DAOs/MySQL';
 import { productsSQLite3 } from './DAOs/SQLite3';
+import { productsMongo } from './DAOs/mongo';
 
 export enum tipoDePersistencia {
     Memory = 'MEM',
@@ -28,8 +29,10 @@ export class productsFactory {
                 instanceSQLite3.initDB();
                 return instanceSQLite3;
 
+            case tipoDePersistencia.LocalMongo:
+                return new productsMongo();
+
            default: 
-            
             return new productsMemory();
         }
     }

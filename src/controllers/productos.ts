@@ -10,7 +10,7 @@ class Producto {
             const {id} = req.params;
 
             if(id){
-                const findProduct = await productsOperations.findOne(Number(id));
+                const findProduct = await productsOperations.findOne(id);
                 if(!findProduct) return res.status(404).json({error: 'El producto solicitado no existe'})
 
                 return res.status(200).json({
@@ -64,7 +64,7 @@ class Producto {
     async updateProduct(req: Request, res: Response) {
         //TODO: Que pasa si nos pasan un producto que no existe
         const dataToUpdate = req.body;
-        const id = Number(req.params.id);
+        const {id} = req.params;
         const updateProduct = await productsOperations.update(id, dataToUpdate);
 
         res.status(201).json({
@@ -74,7 +74,7 @@ class Producto {
 
     async deleteProduct(req: Request, res: Response) {
         try {
-            const id = Number(req.params.id);
+            const {id} = req.params;
 
             const products = await productsOperations.delete(id);
             return res.status(200).json({
