@@ -42,6 +42,10 @@ export class productsMongo implements ProductsClassDAOs {
 
     async getById(productId: string): Promise< ProductII | undefined > { //TODO: ver de nuevo
         try {
+            if(productId.length !== 24) throw({
+                status: 400,
+                msg: 'El id ingresado es incorrecto'
+            })
             const getProduct = await this.productsModel.findById(productId);
            if(!getProduct) throw({
                status: 404,
