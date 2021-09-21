@@ -20,7 +20,7 @@ export class productsMongo implements ProductsClassDAOs {
         if(local) {
             this.mongoDB = `mongodb://localhost:27017/ecommerce`;
         } else {
-            this.mongoDB = `mongodb+srv://roboti:CoderHouseTest1234@cluster0.nodly.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
+            this.mongoDB = `mongodb+srv://roboti:CoderHouseTest1234@cluster0.nodly.mongodb.net/ecommerceCH?retryWrites=true&w=majority`
         }
         mongoose.connect(this.mongoDB);
         this.productsModel = mongoose.model<ProductII>('products', productsSchema)
