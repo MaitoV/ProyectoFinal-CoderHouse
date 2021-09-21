@@ -13,19 +13,6 @@ class ProductsOperations {
 
     async findOne(id: string) : Promise <ProductInterface | undefined > {
         return await this.persistenceInstance.getById(id)
-        //TODO: Trabajar que pasa si vuelve undefined
-        /*try {
-            const readDB = await fileOperations.readFile('productsdb.json');
-            const product = readDB.find(aProduct => aProduct.id === id);
-            if(product){
-                return product
-            } else throw {
-                status: 404,
-                msg: 'No se encontro el producto solicitado'
-            }
-        } catch (error) {
-            throw error;
-        }*/
     }
 
     async getAll(): Promise<ProductInterface[]> {

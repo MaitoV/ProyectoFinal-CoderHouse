@@ -30,6 +30,9 @@ export class productsFactory {
                 return instanceSQLite3;
 
             case tipoDePersistencia.LocalMongo:
+                return new productsMongo(true);
+            
+            case tipoDePersistencia.MongoAtlas:
                 return new productsMongo();
 
            default: 

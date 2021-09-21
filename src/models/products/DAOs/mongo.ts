@@ -16,8 +16,12 @@ const productsSchema = new mongoose.Schema<ProductII>({
 export class productsMongo implements ProductsClassDAOs {
     private mongoDB: string;
     private productsModel;
-    constructor() {
-        this.mongoDB = `mongodb://localhost:27017/ecommerce`;
+    constructor(local: boolean = false) {
+        if(local) {
+            this.mongoDB = `mongodb://localhost:27017/ecommerce`;
+        } else {
+            this.mongoDB = `mongodb+srv://roboti:CoderHouseTest1234@cluster0.nodly.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
+        }
         mongoose.connect(this.mongoDB);
         this.productsModel = mongoose.model<ProductII>('products', productsSchema)
     }
