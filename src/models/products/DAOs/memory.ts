@@ -1,5 +1,5 @@
 import { ProductsClassDAOs } from "../productsInterface";
-import { ProductInterface, ProductI } from "../productsInterface";
+import { ProductInterface, ProductI, ProductQuery } from "../productsInterface";
 import { memorySeeds } from "../../../db/seeds/memory-seeds";
 import moment from "moment";
 
@@ -48,5 +48,25 @@ export class productsMemory implements ProductsClassDAOs {
         this.productos = this.productos.sort((productA: ProductI, productB: ProductI) => productA.id - productB.id);
 
         return updateData;
+    }
+
+    async query(queries: ProductQuery ) {
+        try {
+            type Conditions = (aProduct: ProductI) => boolean;
+            const query: Conditions[] = [];
+
+            if (queries.name) query.push((aProduct: ProductI) => aProduct.name == queries.name);
+            if (queries.price) query.push((aProduct: ProductI) => aProduct.price == queries.price);
+            if (queries.stock) query.push((aProduct: ProductI) => aProduct.stock == queries.stock);
+            if (queries.code) query.push((aProduct: ProductI) => aProduct.code == queries.code);
+
+            const findProduct = this.productos.filter((aProduct) => query.every((x) => x(aProduct)));
+            if(findProduct.length == 0) throw({
+                status: 404,
+                msg: 'No se encontro ningun producto con los filtros proporcionados.'
+            })
+        } catch (error) {
+            throw error;
+        }
     }
 }

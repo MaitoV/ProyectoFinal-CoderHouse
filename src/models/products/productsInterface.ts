@@ -16,8 +16,10 @@ export interface ProductII extends ProductInterface {
     _id: string
 }
 export interface ProductQuery {
-    nombre?: string;
-    precio?: number; 
+    name?: string;
+    price?: number; 
+    stock?: number;
+    code?: string;
 }
 
 export interface ProductsClassDAOs {

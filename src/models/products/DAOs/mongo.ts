@@ -1,4 +1,4 @@
-import {ProductInterface, ProductsClassDAOs, ProductII } from '../productsInterface';
+import {ProductInterface, ProductsClassDAOs, ProductII, ProductQuery, ProductI } from '../productsInterface';
 import moment from 'moment';
 import mongoose from 'mongoose';
 
@@ -40,7 +40,7 @@ export class productsMongo implements ProductsClassDAOs {
        }
     }
 
-    async getById(productId: string): Promise< ProductII | undefined > { //TODO: ver de nuevo
+    async getById(productId: string): Promise< ProductII | undefined > { 
         try {
             if(productId.length !== 24) throw({
                 status: 400,
@@ -88,6 +88,19 @@ export class productsMongo implements ProductsClassDAOs {
         try {
             const update = await this.productsModel.findOneAndUpdate({_id: productId}, newData, {new: true});
             return update;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async query(queries: ProductQuery) : Promise< ProductII | ProductII[]> {
+        try {
+            const findProduct = await this.productsModel.find(queries);
+            if(findProduct.length == 0) throw({
+                status: 404,
+                msg: 'No se encontro ningun producto con los filtros seleccionados'
+            })
+            return findProduct;  
         } catch (error) {
             throw error;
         }

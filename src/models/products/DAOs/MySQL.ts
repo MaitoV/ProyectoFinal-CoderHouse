@@ -1,7 +1,6 @@
 import knex from "knex";
 import moment from "moment";
-import { ProductsClassDAOs } from "../productsInterface";
-import { ProductInterface, ProductI } from "../productsInterface";
+import { ProductInterface, ProductI, ProductQuery, ProductsClassDAOs } from "../productsInterface";
 
 export class productsMySQL implements ProductsClassDAOs{
     private mysqlDB: any;
@@ -74,6 +73,19 @@ export class productsMySQL implements ProductsClassDAOs{
             const id = Number(productId);
             const update = await this.mysqlDB('products').where({id: id}).update(newData);
             return update;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async query(queries: ProductQuery): Promise <ProductI | ProductI[]> {
+        try {
+            const findProduct = await this.mysqlDB.from('products').where(queries);
+            if(findProduct.length == 0) throw({
+                status: 404,
+                msg: 'No se encontro ningun producto con los filtros seleccionados'
+            })
+            return findProduct;     
         } catch (error) {
             throw error;
         }

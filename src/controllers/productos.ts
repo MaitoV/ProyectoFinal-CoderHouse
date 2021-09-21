@@ -1,5 +1,6 @@
 import {Request, Response, NextFunction} from 'express';
 import {productsOperations} from '../apis/productsOperations';
+import { ProductQuery } from '../models/products/productsInterface';
 class Producto { 
     checkProduct (req: Request, res: Response, next: NextFunction) {
         //Lo pasaremos como middleware al controlador
@@ -18,6 +19,19 @@ class Producto {
                 })
             }
 
+            const queries: ProductQuery = {};
+            const {name, price, stock, code} = req.query;
+            if(name) queries.name = name.toString();
+            if(price) queries.price = Number(price);
+            if(stock) queries.stock = Number(stock);
+            if(code) queries.code = code.toString();
+            if(Object.keys(queries).length){
+                const productsQueries = await productsOperations.findQuery(queries);
+                return res.status(200).json({
+                    data: productsQueries
+                  });
+            }
+
             const products = await productsOperations.getAll();
             return res.status(200).json({ data: products });
 
@@ -31,38 +45,14 @@ class Producto {
     async addProduct(req: Request, res: Response) {
         //TODO: validacion de los datos con un middleware
         const newProduct = await productsOperations.add(req.body); 
-            //Validar si el producto ya existe
+            //TODO:Validar si el producto ya existe
             return res.status(201).json({
                 msg: "Producto creado con exito!",
                 data: newProduct
         })
-        /*
-        try {
-            const {name, description, code, photo, price, stock} = req.body;
-            //Mejorar validacion
-            if(!name || !price || !description || !code || !photo || !stock ){
-                throw {
-                    status: 400,
-                    msg: 'La informacion ingresada es incorrecta'
-                }
-            }
-
-            const newProduct = await productsOperations.add(req.body); 
-            //Validar si el producto ya existe
-            return res.status(201).json({
-                msg: "Producto creado con exito!",
-                data: newProduct
-            })
-
-        } catch (error:any){
-            res.status(error.status).json({
-                error: error.msg
-            })
-        } */
     }
 
     async updateProduct(req: Request, res: Response) {
-        //TODO: Que pasa si nos pasan un producto que no existe
         const dataToUpdate = req.body;
         const {id} = req.params;
         const updateProduct = await productsOperations.update(id, dataToUpdate);

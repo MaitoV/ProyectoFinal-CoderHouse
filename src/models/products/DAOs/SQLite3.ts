@@ -1,6 +1,5 @@
 import knex from "knex";
-import { ProductsClassDAOs } from "../productsInterface";
-import { ProductInterface } from "../productsInterface";
+import { ProductsClassDAOs, ProductQuery, ProductInterface } from "../productsInterface";
 import moment from "moment";
 import { sqliteSeeds } from "../../../db/seeds/sqlite-seeds";
 
@@ -87,6 +86,19 @@ export class productsSQLite3 implements ProductsClassDAOs {
             const id = Number(productId);
             const update = await this.sqliteDB('products').where({id: id}).update(newData);
             return update;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async query(queries: ProductQuery ) {
+        try {
+            const findProduct = await this.sqliteDB.from('products').where(queries);
+            if(findProduct.length == 0) throw({
+                status: 404,
+                msg: 'No se encontro ningun producto con los filtros seleccionados'
+            })
+            return findProduct;    
         } catch (error) {
             throw error;
         }

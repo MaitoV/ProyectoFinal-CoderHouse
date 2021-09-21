@@ -1,8 +1,8 @@
-import { ProductInterface } from '../models/products/productsInterface';
+import { ProductInterface, ProductQuery } from '../models/products/productsInterface';
 import { tipoDePersistencia } from '../models/products/productsFactory';
 import { productsFactory } from '../models/products/productsFactory';
 
-const persistencia = tipoDePersistencia.MongoAtlas;
+const persistencia = tipoDePersistencia.Memory;
 
 class ProductsOperations {
     private persistenceInstance;
@@ -31,6 +31,10 @@ class ProductsOperations {
         id: string, 
         newData: ProductInterface) {
             return await this.persistenceInstance.update(id, newData);
+    }
+
+    async findQuery(queries: ProductQuery){
+        return await this.persistenceInstance.query(queries);
     }
 }
 
